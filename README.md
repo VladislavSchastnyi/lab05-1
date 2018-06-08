@@ -20,32 +20,28 @@ $ open https://travis-ci.org
 
 ## Tutorial
 
-```ShellSession
-$ export GITHUB_USERNAME=<имя_пользователя>
-$ export GITHUB_TOKEN=<полученный_токен>
-```
+Присваиваем значения перменным GITHUB_USERNAME и GITHUB_TOKEN
 
 ```ShellSession
-$ cd ${GITHUB_USERNAME}/workspace
-$ pushd .
-$ source scripts/activate
+$ export GITHUB_USERNAME=VladislavSchastnyi
+$ export GITHUB_TOKEN=e3fbbd60c28cbc06728165fe106210ca230c78ea
 ```
 
-```ShellSession
-$ \curl -sSL https://get.rvm.io | bash -s -- --ignore-dotfiles
-$ echo "source $HOME/.rvm/scripts/rvm" >> scripts/activate
-$ rvm autolibs disable
-$ rvm install ruby-2.4.2
-$ rvm use 2.4.2 --default
-$ gem install travis
-```
+Клонируем lab04 в Lab05, переходим в Lab05
 
 ```ShellSession
-$ git clone https://github.com/${GITHUB_USERNAME}/lab04 projects/lab05
-$ cd projects/lab05
-$ git remote remove origin
-$ git remote add origin https://github.com/${GITHUB_USERNAME}/lab05
+$ git clone https://github.com/${GITHUB_USERNAME}/lab04 Lab05 #Клонируем
+Cloning into 'Lab05'...
+remote: Counting objects: 25, done.
+remote: Compressing objects: 100% (15/15), done.
+remote: Total 25 (delta 4), reused 25 (delta 4), pack-reused 0
+Unpacking objects: 100% (25/25), done.
+$ cd Lab05 #Переходим в Lab05
+$ git remote remove origin 
+$ git remote add origin https://github.com/${GITHUB_USERNAME}/Lab05 #Соединяем с репозиторием на сервере
+
 ```
+Создаем .travis.yml и заполняем его
 
 ```ShellSession
 $ cat > .travis.yml <<EOF
@@ -75,37 +71,49 @@ addons:
       - cmake-data
 EOF
 ```
+Заходим в travis
 
 ```ShellSession
 $ travis login --github-token ${GITHUB_TOKEN}
+Shell completion not installed. Would you like to install it now? |y| y
+Successfully logged in as VladislavSchastnyi!
 ```
+
+Включаем отображение предупреждений
 
 ```ShellSession
 $ travis lint
+Warnings for .travis.yml:
+[x] value for addons section is empty, dropping
+[x] in addons section: unexpected key apt, dropping
 ```
 
 ```ShellSession
-$ ex -sc '1i|<фрагмент_вставки_значка>' -cx README.md
+$ [![Build Status](https://travis-ci.com/VladislavSchastnyi/lab05.svg?branch=master)](https://travis-ci.com/VladislavSchastnyi/lab05)
 ```
+Выкладываем всё в репозиторий
 
 ```ShellSession
-$ git add .travis.yml
-$ git add README.md
-$ git commit -m"added CI"
-$ git push origin master
+$ git add .travis.yml # Добавляем файл для коммита
+$ git add README.md # Добавляем файл для коммита
+$ git commit -m"added CI" # Коммитим с комментарием "added CI"
+$ git push origin master # Выкладываем в репозиторий на сервер
 ```
 
+Работаем с travis
+
 ```ShellSession
-$ travis lint
-$ travis accounts
-$ travis sync
-$ travis repos
-$ travis enable
-$ travis whatsup
-$ travis branches
-$ travis history
-$ travis show
+$ travis lint #Отображаем предупреждения
+$ travis accounts #Отображаем аккаунт
+$ travis sync #Синхронизируемся
+$ travis repos #Отображаем, какие репозитории доступны, а какие нет
+$ travis enable #Подключаем проект
+$ travis whatsup #Отоброжаем, что изменилось в проекте
+$ travis branches #Отоброжаем обновленную версию проекта
+$ travis history #Отоброжаем историю проекта
+$ travis show #Отображаем проект
 ```
+
 
 ## Report
 
